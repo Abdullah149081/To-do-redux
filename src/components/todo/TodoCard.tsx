@@ -1,5 +1,6 @@
-import { Button } from '../ui/button';
-import { removeTodo } from '@/redux/features/todoSlice';
+import { useAppDispatch } from "@/Redux/hooks";
+import { removeTodo } from "@/features/todoSlice";
+import { Button } from "../ui/button";
 
 type TTodoCardProps = {
   id: string;
@@ -8,9 +9,10 @@ type TTodoCardProps = {
   isCompleted?: boolean;
 };
 
-const TodoCard = ({ title, description, id, isCompleted }: TTodoCardProps) => {
+const TodoCard = ({ id, title, description, isCompleted }: TTodoCardProps) => {
+  const dispatch = useAppDispatch();
   const toggleState = () => {
-    console.log('Toggle');
+    console.log("Toggle");
   };
 
   return (
@@ -32,7 +34,7 @@ const TodoCard = ({ title, description, id, isCompleted }: TTodoCardProps) => {
       </div>
       <p>{description}</p>
       <div className="space-x-5">
-        <Button className="bg-red-500">
+        <Button className="bg-red-500" onClick={() => dispatch(removeTodo(id))}>
           <svg
             className="size-5"
             fill="none"
