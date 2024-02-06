@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/Redux/hooks";
-import { removeTodo } from "@/features/todoSlice";
+import { removeTodo, toggleCompleted } from "@/features/todoSlice";
 import { Button } from "../ui/button";
 
 type TTodoCardProps = {
@@ -12,12 +12,14 @@ type TTodoCardProps = {
 const TodoCard = ({ id, title, description, isCompleted }: TTodoCardProps) => {
   const dispatch = useAppDispatch();
   const toggleState = () => {
-    console.log("Toggle");
+    dispatch(toggleCompleted(id));
   };
 
   return (
     <div className="bg-white rounded-md flex justify-between items-center p-3 border">
       <input
+        disabled={isCompleted}
+        className="disabled:opacity-50 disabled:cursor-not-allowed"
         onChange={toggleState}
         type="checkbox"
         name="complete"
