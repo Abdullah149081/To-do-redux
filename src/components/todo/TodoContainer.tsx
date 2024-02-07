@@ -2,19 +2,21 @@ import { useAppSelector } from "@/Redux/hooks";
 
 import { useGetTodosQuery } from "@/api/todo";
 import { selectCount } from "@/features/todoSlice";
+import { useState } from "react";
 import AddTodoModal from "./AddTodoModal";
 import TodoCard from "./TodoCard";
 import TodoFilter from "./TodoFilter";
 
 const TodoContainer = () => {
   // const todos = useAppSelector(selectCount);
-  const { data: todos } = useGetTodosQuery();
+  const [position, setPosition] = useState("");
+  const { data: todos } = useGetTodosQuery(position);
 
   return (
     <div>
       <div className="flex justify-between mb-5 ">
         <AddTodoModal />
-        <TodoFilter />
+        <TodoFilter position={position} setPosition={setPosition} />
       </div>
       <div className="bg-primary-gradient w-full h-full rounded-xl  p-[5px]">
         <div className="bg-white p-5 w-full h-full rounded-lg space-y-3">
