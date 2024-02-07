@@ -1,4 +1,5 @@
 import { useAppDispatch } from "@/Redux/hooks";
+import { usePostTodoMutation } from "@/api/todo";
 import { addTodo } from "@/features/todoSlice";
 import { FormEvent, useState } from "react";
 import { Button } from "../ui/button";
@@ -13,24 +14,37 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
+  const [position, setPosition] = useState("low");
+  const [postTodo] = usePostTodoMutation();
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const randomString = Math.random().toString(36).substring(2, 7);
+    // const randomString = Math.random().toString(36).substring(2, 7);
 
     const taskDetails = {
-      id: randomString,
       title: task,
+      isCompleted: false,
       description: description,
+      priority: position,
     };
-    dispatch(addTodo(taskDetails));
+    postTodo(taskDetails);
+    // dispatch(addTodo(taskDetails));
   };
 
   return (
@@ -68,6 +82,24 @@ const AddTodoModal = () => {
                 id="description"
                 className="col-span-3"
               />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="description" className="text-right">
+                Priority
+              </Label>
+              <Select onValueChange={(value) => setPosition(value)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select a Priority" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Priority</SelectLabel>
+                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="low">low</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <div className="flex justify-end">
