@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Button } from '../ui/button';
+import { useState } from "react";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,10 +8,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
+} from "../ui/dropdown-menu";
 
 const TodoFilter = () => {
-  const [position, setPosition] = useState('bottom');
+  const [position, setPosition] = useState("bottom");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
