@@ -1,10 +1,11 @@
 import { useAppDispatch } from "@/Redux/hooks";
+import { useRemoveTodoMutation, useUpdateTodoMutation } from "@/api/todo";
 import { removeTodo, toggleCompleted } from "@/features/todoSlice";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 
 type TTodoCardProps = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   isCompleted?: boolean;
@@ -12,15 +13,24 @@ type TTodoCardProps = {
 };
 
 const TodoCard = ({
-  id,
+  _id,
   title,
   description,
   isCompleted,
   priority,
 }: TTodoCardProps) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+  const [removeTodo] = useRemoveTodoMutation();
+  const [updateTodo] = useUpdateTodoMutation();
   const toggleState = () => {
-    dispatch(toggleCompleted(id));
+    updateTodo({
+      _id,
+      isCompleted: !isCompleted,
+      title,
+      description,
+      priority,
+    });
+    // dispatch(toggleCompleted(_id));
   };
 
   return (
@@ -35,11 +45,14 @@ const TodoCard = ({
       />
       <p className="font-semibold flex-1 ">{title}</p>
       <div
-        className={cn("font-semibold flex-1 capitalize inline-flex items-center gap-2", {
-          "text-red-500": priority === "high",
-          "text-yellow-500": priority === "medium",
-          "text-green-500": priority === "low",
-        })}
+        className={cn(
+          "font-semibold flex-1 capitalize inline-flex items-center gap-2",
+          {
+            "text-red-500": priority === "high",
+            "text-yellow-500": priority === "medium",
+            "text-green-500": priority === "low",
+          }
+        )}
       >
         <p
           className={cn(" size-2 rounded ", {
@@ -60,7 +73,7 @@ const TodoCard = ({
       </div>
       <p className="flex-[2]">{description}</p>
       <div className="space-x-5">
-        <Button className="bg-red-500" onClick={() => dispatch(removeTodo(id))}>
+        <Button className="bg-red-500" onClick={() => removeTodo(_id)}>
           <svg
             className="size-5"
             fill="none"
