@@ -6,6 +6,7 @@ interface TodoItem {
   title: string;
   description: string;
   isCompleted?: boolean;
+  priority?: "low" | "medium" | "high";
 }
 
 interface TodoState {
@@ -21,7 +22,11 @@ export const todoSlice = createSlice({
   initialState,
   reducers: {
     addTodo: (state, action: PayloadAction<TodoItem>) => {
-      state.todoList.push({ ...action.payload, isCompleted: false });
+      state.todoList.push({
+        ...action.payload,
+        isCompleted: false,
+        priority: "low",
+      });
       state.todoList.sort((a, b) => {
         return a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1;
       });
